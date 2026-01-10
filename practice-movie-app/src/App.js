@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {useState} from "react";
 
 function App() {
     // 단일 할 일 입력 받음
@@ -10,7 +10,7 @@ function App() {
     const onSubmit = (event) => {
         event.preventDefault();
         if (toDo === "") return;
-        setToDos((currentArray) => [toDo, ...currentArray] );
+        setToDos((currentArray) => [toDo, ...currentArray]);
         setToDo("");
     }
     console.log(toDos);
@@ -27,6 +27,12 @@ function App() {
                 />
                 <button>Add To Do</button>
             </form>
+            <hr/>
+            <ul>
+                {toDos.map((item, index) => (
+                    <li key={index}>{item}</li>
+                ))}
+            </ul>
         </div>
     )
 }
