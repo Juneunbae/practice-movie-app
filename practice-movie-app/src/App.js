@@ -1,38 +1,65 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function App() {
-    // 단일 할 일 입력 받음
-    const [toDo, setToDo] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [coins, setCoins] = useState([]);
+    useEffect(() => {
+        fetch("https://api.coinpaprika.com/v1/tickers")
+            .then(res => res.json())
+            .then((json) => {
+                setCoins(json)
+                setLoading(false)
+            })
+    }, []);
+    const [seed, setSeed] = useState("");
+    const [selectedCoin, setSelectedCoin] = useState("");
+    const [price, setPrice] = useState();
 
-    // 다중으로 할 일 입력 받음
-    const [toDos, setToDos] = useState([]);
-    const onChange = (event) => setToDo(event.target.value);
-    const onSubmit = (event) => {
-        event.preventDefault();
-        if (toDo === "") return;
-        setToDos((currentArray) => [toDo, ...currentArray]);
-        setToDo("");
+    const onChangeSeed = (event) => setSeed(event.target.value);
+
+    const onSelectedCoin = (event) => {
+        const id = event.target.value;
+        setSelectedCoin(id);
+
+        const coin = coins.find((coin) => coin.id === id);
+        setPrice(coin ? coin.quotes.USD.price : null)
     }
-    console.log(toDos);
+
+    const amount = price != null && seed != null ? Number(seed) / Number(price) : "";
 
     return (
         <div>
-            <h1>My To Dos ({toDos.length})</h1>
-            <form onSubmit={onSubmit}>
+            <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
+            {loading ? (
+                <strong>Loading...</strong>
+            ) : (
+                <select
+                    style={{ width: "500px", height: "30px"}}
+                    value={selectedCoin}
+                    onChange={onSelectedCoin}
+                >
+                    <option value={""} disabled>코인을 선택하세요.</option>
+                    {coins.map((coin) => (
+                        <option
+                            key={coin.id}
+                            value={coin.id}
+                        >
+                            {coin.name} ({coin.symbol}): ${coin.quotes.USD.price} USD
+                        </option>
+                    ))}
+                </select>
+            )}
+            <br/>
+            <div>
                 <input
-                    onChange={onChange}
-                    value={toDo}
-                    type={"text"}
-                    placeholder={"Write your to do.."}
+                    value={seed}
+                    onChange={onChangeSeed}
+                    style={{ marginTop : "10px", width : "250px", height : "30px"}}
+                    type={"number"}
+                    placeholder={"Write your seed : $"}
                 />
-                <button>Add To Do</button>
-            </form>
-            <hr/>
-            <ul>
-                {toDos.map((item, index) => (
-                    <li key={index}>{item}</li>
-                ))}
-            </ul>
+                {amount ? <span> : <strong>{amount}</strong> 개 </span> : null}
+            </div>
         </div>
     )
 }
