@@ -23,10 +23,13 @@ function Home() {
             ) : (
                 <div>
                     {movies.map(movie =>
-                        <Movie coverImage={movie.medium_cover_image}
-                               title={movie.title}
-                               summary={movie.summary}
-                               slug={movie.slug} genres={movie.genres}
+                        <Movie
+                            key={movie.id}
+                            id={movie.id}
+                            coverImage={movie.medium_cover_image}
+                            title={movie.title}
+                            summary={movie.summary}
+                            slug={movie.slug} genres={movie.genres}
                         />
                     )}
                 </div>

@@ -1,6 +1,4 @@
-import {
-    BrowserRouter as Router
-} from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
 import Switch from "react-router-dom/es/Switch";
 import Home from "./routes/Home";
 import Route from "react-router-dom/es/Route";
@@ -10,8 +8,8 @@ function App() {
     // router를 render하는 역할
     return <Router>
         <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/movie" component={Detail} />
+            <Route exact path="/" component={Home}/>
+            <Route exact path="/movie/:id" component={Detail}/>
         </Switch>
     </Router>;
 }
