@@ -6,13 +6,13 @@ function Detail() {
     console.log(id);
     const getMovie = async () => {
         const json = await (
-            await fetch(`https://yts.lt/api/v2/movie_details.json?movie_id=${id}`)
+            await fetch(`https://yts.bz/api/v2/movie_details.json?movie_id=${id}`)
         ).json();
         console.log(json);
-    }
+    };
     useEffect(() => {
-        getMovie()
-    }, []);
+        getMovie();
+    }, [id]);
     return <h1>Detail</h1>;
 }
 
